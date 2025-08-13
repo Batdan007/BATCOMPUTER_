@@ -1,0 +1,34 @@
+# App Program Writer Requirements
+# Core dependencies for the professional code editor
+
+# GUI Framework (built-in with Python)
+# tkinter - comes with Python installation
+
+# Code formatting and analysis
+autopep8>=2.0.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Syntax highlighting (optional)
+pygments>=2.15.0
+
+# File handling and utilities
+pathlib2>=2.3.7
+
+# JSON handling (built-in with Python)
+# json - comes with Python installation
+
+# Subprocess and system utilities (built-in with Python)
+# subprocess, os, sys - come with Python installation
+
+# Date and time handling (built-in with Python)
+# datetime - comes with Python installation
+
+# Threading support (built-in with Python)
+# threading, queue - come with Python installation
+
+# For enhanced features (optional)
+# These can be installed for additional functionality
+# jedi>=0.19.0  # For code completion
+# pylsp-mypy>=1.8.0  # For type checking
+# python-lsp-server>=1.7.0  # For language server features
