@@ -16,8 +16,20 @@ from wan.configs import WAN_CONFIGS, SIZE_CONFIGS, MAX_AREA_CONFIGS, SUPPORTED_S
 from wan.utils.utils import cache_video
 
 import gc
+from pathlib import Path
 
 # --- 1. Global Setup and Model Loading ---
+# ----------------------------------------------------------------------
+# OPTIONAL: make the example‑image path robust – create a placeholder if needed
+# ----------------------------------------------------------------------
+EXAMPLE_IMG = os.path.join(os.path.dirname(__file__), "examples", "i2v_input.JPG")
+if not os.path.isfile(EXAMPLE_IMG):
+    # generate a 1×1 white image on‑the‑fly
+    Path(os.path.dirname(EXAMPLE_IMG)).mkdir(parents=True, exist_ok=True)
+    Image.new("RGB", (1, 1), (255, 255, 255)).save(EXAMPLE_IMG)
+# ----------------------------------------------------------------------
+
+
 
 print("Starting Gradio App for Wan 2.2 TI2V-5B...")
 
@@ -33,6 +45,20 @@ cfg = WAN_CONFIGS[TASK_NAME]
 FIXED_FPS = 24
 MIN_FRAMES_MODEL = 8
 MAX_FRAMES_MODEL = 121 
+# --------------------------------------------------------------
+# Device selection – GPU preferred, but fall back to CPU
+# --------------------------------------------------------------
+if torch.cuda.is_available():
+    device = "cuda"
+    device_id = 0
+else:
+    device = "cpu"
+    device_id = -1
+    print(
+        "⚠️ No CUDA device detected – falling back to CPU. "
+        "The 5‑B Wan model may be too large for CPU inference; "
+        "consider using a smaller checkpoint or a GPU."
+    )
 
 # Dimension calculation constants
 MOD_VALUE = 32
