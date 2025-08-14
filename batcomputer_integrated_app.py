@@ -31,8 +31,7 @@ class BATCOMPUTER_IntegratedApp:
         
         # BATCOMPUTER_ specific variables
         self.voice_enabled = tk.BooleanVar(value=False)
-        self.ml_agent_enabled = tk.BooleanVar(value=False)
-        self.video_processing_enabled = tk.BooleanVar(value=False)
+        # ML Agent and Video Processing removed - not implemented
         
         # Create main containers
         self.create_menu()
@@ -79,18 +78,16 @@ class BATCOMPUTER_IntegratedApp:
         batcomputer_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="BATCOMPUTER_", menu=batcomputer_menu)
         batcomputer_menu.add_checkbutton(label="Voice Commander", variable=self.voice_enabled, command=self.toggle_voice_commander)
-        batcomputer_menu.add_checkbutton(label="ML Agent", variable=self.ml_agent_enabled, command=self.toggle_ml_agent)
-        batcomputer_menu.add_checkbutton(label="Video Processing", variable=self.video_processing_enabled, command=self.toggle_video_processing)
+        # ML Agent and Video Processing checkbuttons removed - not implemented
         batcomputer_menu.add_separator()
         batcomputer_menu.add_command(label="Run BATCOMPUTER_ Voice", command=self.run_batcomputer_voice)
-        batcomputer_menu.add_command(label="Run ML Agent", command=self.run_ml_agent)
-        batcomputer_menu.add_command(label="Run Video Processing", command=self.run_video_processing)
-        batcomputer_menu.add_command(label="Auto Installer", command=self.run_auto_installer)
+        # ML Agent and Video Processing removed - not implemented
+        # Auto Installer removed - not shipped
         
         # View menu
         view_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="View", menu=view_menu)
-        view_menu.add_checkbutton(label="Line Numbers", variable=self.line_numbers, command=self.toggle_line_numbers)
+        # Line Numbers functionality removed - not implemented
         view_menu.add_checkbutton(label="Auto Save", variable=self.auto_save, command=self.toggle_auto_save)
         
         # Tools menu
@@ -100,9 +97,7 @@ class BATCOMPUTER_IntegratedApp:
         tools_menu.add_command(label="Format Code", command=self.format_code)
         tools_menu.add_command(label="Search & Replace", command=self.show_search_replace)
         tools_menu.add_separator()
-        tools_menu.add_command(label="Generate Text2Video", command=self.generate_text2video)
-        tools_menu.add_command(label="Generate Image2Video", command=self.generate_image2video)
-        tools_menu.add_command(label="Generate TextImage2Video", command=self.generate_textimage2video)
+        # Video generation tools removed - not implemented
         
         # Help menu
         help_menu = tk.Menu(menubar, tearoff=0)
@@ -125,8 +120,7 @@ class BATCOMPUTER_IntegratedApp:
         # BATCOMPUTER_ specific toolbar
         ttk.Separator(toolbar, orient='vertical').pack(side='left', padx=5, fill='y')
         ttk.Button(toolbar, text="🎤 Voice", command=self.run_batcomputer_voice).pack(side='left', padx=2)
-        ttk.Button(toolbar, text="🤖 ML Agent", command=self.run_ml_agent).pack(side='left', padx=2)
-        ttk.Button(toolbar, text="🎬 Video", command=self.run_video_processing).pack(side='left', padx=2)
+        # ML Agent and Video Processing buttons removed - not implemented
         
         # Language selector
         ttk.Label(toolbar, text="Language:").pack(side='right', padx=5)
@@ -156,16 +150,8 @@ class BATCOMPUTER_IntegratedApp:
         
         ttk.Button(tools_frame, text="🎤 Voice Commander", 
                   command=self.run_batcomputer_voice).pack(fill='x', pady=2)
-        ttk.Button(tools_frame, text="🤖 ML Agent", 
-                  command=self.run_ml_agent).pack(fill='x', pady=2)
-        ttk.Button(tools_frame, text="🎬 Text2Video", 
-                  command=self.generate_text2video).pack(fill='x', pady=2)
-        ttk.Button(tools_frame, text="🖼️ Image2Video", 
-                  command=self.generate_image2video).pack(fill='x', pady=2)
-        ttk.Button(tools_frame, text="🔤 TextImage2Video", 
-                  command=self.generate_textimage2video).pack(fill='x', pady=2)
-        ttk.Button(tools_frame, text="⚙️ Auto Installer", 
-                  command=self.run_auto_installer).pack(fill='x', pady=2)
+        # ML Agent and Video Processing tools removed - not implemented
+        # Auto Installer button removed - not shipped
         
         # Project explorer
         project_label = ttk.Label(left_frame, text="Project Explorer", font=('Arial', 10, 'bold'))
@@ -258,16 +244,12 @@ class BATCOMPUTER_IntegratedApp:
             self.status_label.config(text="Voice Commander disabled")
     
     def toggle_ml_agent(self):
-        if self.ml_agent_enabled.get():
-            self.status_label.config(text="ML Agent enabled")
-        else:
-            self.status_label.config(text="ML Agent disabled")
+        # ML Agent toggle removed - not implemented
+        pass
     
     def toggle_video_processing(self):
-        if self.video_processing_enabled.get():
-            self.status_label.config(text="Video Processing enabled")
-        else:
-            self.status_label.config(text="Video Processing disabled")
+        # Video Processing toggle removed - not implemented
+        pass
     
     def run_batcomputer_voice(self):
         try:
@@ -289,161 +271,52 @@ class BATCOMPUTER_IntegratedApp:
             self.output_text.insert('end', f"❌ Error: {str(e)}\n")
     
     def run_ml_agent(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🤖 Starting ML Agent...\n")
-            
-            if os.path.exists('ml_agent/config.py'):
-                # Import and run ML agent
-                sys.path.append('ml_agent')
-                try:
-                    import config
-                    self.output_text.insert('end', "✅ ML Agent configuration loaded\n")
-                except Exception as e:
-                    self.output_text.insert('end', f"❌ ML Agent error: {str(e)}\n")
-            else:
-                self.output_text.insert('end', "❌ ML Agent not found\n")
-            
-            self.status_label.config(text="ML Agent execution completed")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # ML Agent functionality removed - not implemented
+        pass
     
     def run_video_processing(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🎬 Starting Video Processing...\n")
-            
-            # Check available video processing modules
-            video_modules = ['text2video.py', 'image2video.py', 'textimage2video.py']
-            for module in video_modules:
-                if os.path.exists(module):
-                    self.output_text.insert('end', f"✅ Found: {module}\n")
-                else:
-                    self.output_text.insert('end', f"❌ Missing: {module}\n")
-            
-            self.status_label.config(text="Video Processing check completed")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # Video Processing functionality removed - not implemented
+        pass
     
     def run_auto_installer(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "⚙️ Starting BATCOMPUTER_ Auto Installer...\n")
-            
-            if os.path.exists('BATCOMPUTER_auto_installer.py'):
-                result = subprocess.run([sys.executable, 'BATCOMPUTER_auto_installer.py'], 
-                                     capture_output=True, text=True, timeout=30)
-                if result.stdout:
-                    self.output_text.insert('end', "STDOUT:\n" + result.stdout)
-                if result.stderr:
-                    self.output_text.insert('end', "STDERR:\n" + result.stderr)
-            else:
-                self.output_text.insert('end', "❌ Auto Installer not found\n")
-            
-            self.status_label.config(text="Auto Installer execution completed")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # Auto Installer functionality removed - not shipped
+        pass
     
     def generate_text2video(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🎬 Generating Text2Video...\n")
-            
-            if os.path.exists('text2video.py'):
-                # Create a simple text2video generation interface
-                self.create_text2video_interface()
-            else:
-                self.output_text.insert('end', "❌ Text2Video module not found\n")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # Text2Video functionality removed - not implemented
+        pass
     
     def generate_image2video(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🖼️ Generating Image2Video...\n")
-            
-            if os.path.exists('image2video.py'):
-                self.create_image2video_interface()
-            else:
-                self.output_text.insert('end', "❌ Image2Video module not found\n")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # Image2Video functionality removed - not implemented
+        pass
     
     def generate_textimage2video(self):
-        try:
-            self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🔤 Generating TextImage2Video...\n")
-            
-            if os.path.exists('textimage2video.py'):
-                self.create_textimage2video_interface()
-            else:
-                self.output_text.insert('end', "❌ TextImage2Video module not found\n")
-        except Exception as e:
-            self.output_text.insert('end', f"❌ Error: {str(e)}\n")
+        # TextImage2Video functionality removed - not implemented
+        pass
     
     def create_text2video_interface(self):
-        # Create a simple interface for text2video generation
-        interface_window = tk.Toplevel(self.root)
-        interface_window.title("BATCOMPUTER_ Text2Video Generator")
-        interface_window.geometry("500x400")
-        interface_window.transient(self.root)
-        interface_window.grab_set()
-        
-        ttk.Label(interface_window, text="Text2Video Generation", font=('Arial', 14, 'bold')).pack(pady=10)
-        
-        ttk.Label(interface_window, text="Enter your prompt:").pack(pady=5)
-        prompt_entry = scrolledtext.ScrolledText(interface_window, height=4, width=50)
-        prompt_entry.pack(pady=5)
-        
-        ttk.Button(interface_window, text="Generate Video", 
-                  command=lambda: self.execute_text2video(prompt_entry.get('1.0', 'end-1c'))).pack(pady=10)
+        # Text2Video interface removed - not implemented
+        pass
     
     def create_image2video_interface(self):
-        interface_window = tk.Toplevel(self.root)
-        interface_window.title("BATCOMPUTER_ Image2Video Generator")
-        interface_window.geometry("500x400")
-        interface_window.transient(self.root)
-        interface_window.grab_set()
-        
-        ttk.Label(interface_window, text="Image2Video Generation", font=('Arial', 14, 'bold')).pack(pady=10)
-        
-        ttk.Button(interface_window, text="Select Image", 
-                  command=self.select_image_for_video).pack(pady=10)
+        # Image2Video interface removed - not implemented
+        pass
     
     def create_textimage2video_interface(self):
-        interface_window = tk.Toplevel(self.root)
-        interface_window.title("BATCOMPUTER_ TextImage2Video Generator")
-        interface_window.geometry("500x400")
-        interface_window.transient(self.root)
-        interface_window.grab_set()
-        
-        ttk.Label(interface_window, text="TextImage2Video Generation", font=('Arial', 14, 'bold')).pack(pady=10)
-        
-        ttk.Label(interface_window, text="Enter your prompt:").pack(pady=5)
-        prompt_entry = scrolledtext.ScrolledText(interface_window, height=4, width=50)
-        prompt_entry.pack(pady=5)
-        
-        ttk.Button(interface_window, text="Select Image", 
-                  command=self.select_image_for_video).pack(pady=5)
-        
-        ttk.Button(interface_window, text="Generate Video", 
-                  command=lambda: self.execute_textimage2video(prompt_entry.get('1.0', 'end-1c'))).pack(pady=10)
+        # TextImage2Video interface removed - not implemented
+        pass
     
     def select_image_for_video(self):
-        image_path = filedialog.askopenfilename(
-            title="Select Image",
-            filetypes=[("Image files", "*.png *.jpg *.jpeg *.bmp *.gif"), ("All files", "*.*")]
-        )
-        if image_path:
-            self.output_text.insert('end', f"🖼️ Selected image: {image_path}\n")
+        # Image selection functionality removed - not implemented
+        pass
     
     def execute_text2video(self, prompt):
-        self.output_text.insert('end', f"🎬 Generating video with prompt: {prompt}\n")
-        # Here you would integrate with the actual text2video.py module
+        # Text2Video execution removed - not implemented
+        pass
     
     def execute_textimage2video(self, prompt):
-        self.output_text.insert('end', f"🔤 Generating video with prompt: {prompt}\n")
-        # Here you would integrate with the actual textimage2video.py module
+        # TextImage2Video execution removed - not implemented
+        pass
     
     def show_batcomputer_docs(self):
         docs_text = """BATCOMPUTER_ Integrated Development Environment
@@ -454,25 +327,13 @@ Available Tools and Modules:
 - BATCOMPUTER_voice_commander.py
 - Enhanced voice recognition and commands
 
-🤖 ML Agent:
-- ml_agent/ directory
-- Machine learning capabilities
-
-🎬 Video Processing:
-- text2video.py - Generate videos from text
-- image2video.py - Convert images to videos
-- textimage2video.py - Combined text and image processing
-
-⚙️ Utilities:
-- BATCOMPUTER_auto_installer.py
-- Complete dependency management
-- System configuration tools
-
 🔧 Development Tools:
 - Professional code editor
 - Project management
 - Multi-language support
 - Code execution and formatting
+
+Note: ML Agent, Video Processing, and Auto Installer features have been removed.
 
 For detailed documentation, check the individual README files."""
         
@@ -797,6 +658,7 @@ For detailed documentation, check the individual README files."""
                 self.root.after_cancel(self.auto_save_timer)
     
     def toggle_line_numbers(self):
+        # Line Numbers functionality removed - not implemented
         pass
     
     def update_line_numbers(self):

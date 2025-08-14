@@ -30,48 +30,33 @@ class SimpleAlfred:
         print(f"   AI Model (Ollama): {'✅' if self.has_ollama else '❌'}")
         
     def init_tts(self):
-        """Initialize TTS with Google TTS for British accent"""
+        """Initialize TTS with enhanced built-in only"""
         try:
-            # Try Google TTS first (British accent)
-            from gtts import gTTS
-            import pygame
-            pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
-            self.use_gtts = True
-            self.tts_type = "Google TTS (British)"
-            print("🇬🇧 Using Google TTS with British accent")
+            # Google TTS removed - not shipped
+            import pyttsx3
+            self.tts = pyttsx3.init()
+            self.use_gtts = False
+            self.tts_type = "Built-in TTS (Enhanced)"
+            
+            # Make David sound as British as possible
+            voices = self.tts.getProperty('voices')
+            for voice in voices:
+                if 'david' in voice.name.lower():
+                    self.tts.setProperty('voice', voice.id)
+                    break
+            
+            # British-style settings
+            self.tts.setProperty('rate', 110)  # Slow and deliberate
+            self.tts.setProperty('volume', 0.95)
+            print("🎭 Using enhanced built-in TTS")
             return True
-        except ImportError as e:
-            print(f"Google TTS not available: {e}")
-            # Fallback to pyttsx3
-            try:
-                import pyttsx3
-                self.tts = pyttsx3.init()
-                self.use_gtts = False
-                self.tts_type = "Built-in TTS (Enhanced)"
-                
-                # Make David sound as British as possible
-                voices = self.tts.getProperty('voices')
-                for voice in voices:
-                    if 'david' in voice.name.lower():
-                        self.tts.setProperty('voice', voice.id)
-                        break
-                
-                # British-style settings
-                self.tts.setProperty('rate', 110)  # Slow and deliberate
-                self.tts.setProperty('volume', 0.95)
-                print("🎭 Using enhanced built-in TTS")
-                return True
-            except Exception as e:
-                print(f"TTS initialization failed: {e}")
-                return False
+        except Exception as e:
+            print(f"TTS initialization failed: {e}")
+            return False
     
     def init_whisper(self):
-        try:
-            import whisper
-            self.whisper_model = whisper.load_model("base")
-            return True
-        except:
-            return False
+        # Whisper functionality removed - not shipped
+        return False
             
     def check_ollama(self):
         try:
@@ -84,7 +69,7 @@ class SimpleAlfred:
             return False
     
     def speak(self, text):
-        """Speak with British accent using Google TTS or enhanced built-in"""
+        """Speak with British accent using enhanced built-in TTS only"""
         # Make text more formal and British
         british_text = text.replace("Master Batdan", "Master Wayne")
         british_text = british_text.replace("I'm", "I am")
@@ -98,30 +83,8 @@ class SimpleAlfred:
         
         if self.has_tts:
             try:
-                if self.use_gtts:
-                    # Use Google TTS with British accent
-                    from gtts import gTTS
-                    import pygame
-                    
-                    # Use British English with UK domain for proper accent
-                    tts = gTTS(text=british_text, lang='en', tld='co.uk', slow=False)
-                    
-                    with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as tmp_file:
-                        tts.save(tmp_file.name)
-                        
-                        pygame.mixer.music.load(tmp_file.name)
-                        pygame.mixer.music.play()
-                        
-                        # Wait for playback to complete
-                        while pygame.mixer.music.get_busy():
-                            pygame.time.Clock().tick(10)
-                        
-                        # Clean up temp file
-                        pygame.mixer.music.unload()
-                        os.unlink(tmp_file.name)
-                        
-                else:
-                    # Enhanced built-in TTS with Michael Caine-style pauses
+                # Google TTS removed - not shipped
+                # Enhanced built-in TTS with Michael Caine-style pauses
                     dramatic_text = british_text.replace(". ", "... ")
                     dramatic_text = dramatic_text.replace(", ", "... ")
                     dramatic_text = dramatic_text.replace("Master Wayne", "Master... Wayne")

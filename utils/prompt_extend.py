@@ -76,10 +76,21 @@ class PromptExpander:
                         seed=-1,
                         *args,
                         **kwargs):
-        pass
+        """Extend prompt with image for visual-language tasks"""
+        if image is not None:
+            # Convert image to base64 if needed
+            if hasattr(image, 'save'):
+                import io
+                import base64
+                img_buffer = io.BytesIO()
+                image.save(img_buffer, format='PNG')
+                img_str = base64.b64encode(img_buffer.getvalue()).decode()
+                return f"{system_prompt}\nImage: {img_str}\nPrompt: {prompt}\nSeed: {seed}"
+        return f"{system_prompt}\nPrompt: {prompt}\nSeed: {seed}"
 
     def extend(self, prompt, system_prompt, seed=-1, *args, **kwargs):
-        pass
+        """Extend prompt with system prompt and seed"""
+        return f"{system_prompt}\nPrompt: {prompt}\nSeed: {seed}"
 
     def decide_system_prompt(self, tar_lang="zh", prompt=None):
         assert self.task is not None

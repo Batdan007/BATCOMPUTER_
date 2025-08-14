@@ -518,11 +518,13 @@ class AppProgramWriter:
         else:
             if self.auto_save_timer:
                 self.root.after_cancel(self.auto_save_timer)
-    
+
     def toggle_line_numbers(self):
-        # Implementation for toggling line numbers
-        pass
-    
+        if self.line_numbers.get():
+            self.update_line_numbers()
+        else:
+            self.line_numbers_text.config(state='disabled')
+
     def update_line_numbers(self):
         if hasattr(self, 'line_numbers_text') and self.line_numbers.get():
             content = self.editor.get('1.0', 'end-1c')

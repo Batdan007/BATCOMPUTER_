@@ -30,15 +30,15 @@ def main():
         "pyttsx3>=2.90",
         "gtts>=2.4.0",
         "edge-tts>=6.1.9",
-        "pygame>=2.5.0",
+        # "pygame>=2.5.0",  # Removed - not used
         "requests>=2.31.0"
     ]
     
     # Optional advanced packages
     advanced_packages = [
-        "elevenlabs>=0.2.26",
-        "openai-whisper>=20231117",
-        "azure-cognitiveservices-speech>=1.34.0"
+        # "elevenlabs>=0.2.26",  # Removed - not shipped
+        # "openai-whisper>=20231117",  # Removed - not shipped
+        # "azure-cognitiveservices-speech>=1.34.0"  # Removed - not shipped
     ]
     
     print("Installing core voice packages...")
@@ -54,6 +54,7 @@ def main():
         # Ask about advanced packages
         try:
             response = input("\nWould you like to install advanced packages (ElevenLabs, Whisper, Azure)? [y/N]: ").strip().lower()
+    # Note: Advanced packages are no longer available - not shipped
             if response in ['y', 'yes']:
                 print("\nInstalling advanced packages...")
                 for package in advanced_packages:
