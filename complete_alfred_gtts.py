@@ -98,22 +98,43 @@ class SimpleAlfred:
                 pass
     
     def get_ai_response(self, query):
-        """Get AI response from Ollama using built-in http.client"""
-        try:
-            print(f"Debug: Attempting Ollama API call...")
-            
-            # Prepare the JSON payload
-            payload = {
+        def get_ai_response(self, query):
+    """Get AI response with BATCOMPUTER personality."""
+    try:
+        # ---- 1️⃣  Build the *reasoning* prompt ---------------------------------
+        # Keep the original system prompt (the butler “you are BATCOMPUTER …” part)
+        # and prepend the step‑by‑step scaffold to the user message.
+        reasoning_prompt = f"{REASONING_TEMPLATE}\n\n{query}"
+
+        # ---- 2️⃣  Call Ollama --------------------------------------------------
+        response = requests.post(
+            "http://localhost:11434/api/chat",
+            json={
                 "model": "dolphin-mistral:7b",
                 "messages": [
                     {
-                        "role": "system", 
-                        "content": "You are Alfred Pennyworth, Batman's loyal butler from the Dark Knight films. Speak in Michael Caine's distinctive style - proper British manner with formal vocabulary, slightly slow and deliberate speech patterns. Keep responses concise but helpful. Address the user as 'Master Wayne' or 'Sir'."
+                        "role": "system",
+                        "content": "You are BATCOMPUTER Pennyworth, Batman's loyal butler. "
+                                   "Speak in Michael Caine's style – proper British manner, "
+                                   "measured pace, formal vocabulary. Address the user as "
+                                   "'Master Wayne' or 'Sir'. Keep responses concise but helpful."
                     },
-                    {"role": "user", "content": query}
+                    {"role": "user", "content": reasoning_prompt}
                 ],
                 "stream": False
-            }
+            },
+            timeout=30
+        )
+        # -----------------------------------------------------------------------
+        if response.status_code == 200:
+            result = response.json()
+            return result.get('message', {}).get('content', '')
+        # -----------------------------------------------------------------------
+    except Exception as e:
+        self.logger.error(f"Error getting AI response: {e}")
+        # fallback simple answers …
+        return f"Apologies, {self.master_name}, I seem to have hit a snag."
+
             
             # Create connection
             conn = http.client.HTTPConnection('localhost', 11434)

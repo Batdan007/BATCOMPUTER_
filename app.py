@@ -2,22 +2,71 @@ import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
-# wan2.2-main/gradio_ti2v.py
 import gradio as gr
 import torch
-from huggingface_hub import snapshot_download
+from huggingface_hub import snapshot_download   # <-- this line is required
+import spaces                                   # comes from huggingface_hub[spaces]
+
 from PIL import Image
 import random
 import numpy as np
-import spaces
-
-import wan
-from wan.configs import WAN_CONFIGS, SIZE_CONFIGS, MAX_AREA_CONFIGS, SUPPORTED_SIZES
-from wan.utils.utils import cache_video
-
 import gc
 
-# --- 1. Global Setup and Model Loading ---
+# ----------------------------------------------------------------------
+# 1️⃣ Global Setup & Model Loading
+# ----------------------------------------------------------------------
+print("🚀 Starting Gradio app for Wan 2.2 TI2V‑5B …")
+
+# Download model snapshots from the Hugging Face Hub
+repo_id = "Wan-AI/Wan2.2-TI2V-5B"
+print(f"Downloading / loading checkpoints for {repo_id} …")
+ckpt_dir = snapshot_download(repo_id, local_dir_use_symlinks=False)
+print(f"✔ Checkpoints stored at {ckpt_dir}")
+
+# Load the model configuration
+TASK_NAME = "ti2v-5B"
+cfg = WAN_CONFIGS[TASK_NAME]
+FIXED_FPS = 24
+MIN_FRAMES_MODEL = 8
+MAX_FRAMES_MODEL = 121
+
+# Dimension‑calculation constants
+MOD_VALUE = 32
+DEFAULT_H_SLIDER_VALUE = 704
+DEFAULT_W_SLIDER_VALUE = 1280
+NEW_FORMULA_MAX_AREA = 1280.0 * 704.0
+SLIDER_MIN_H, SLIDER_MAX_H = 128, 1280
+SLIDER_MIN_W, SLIDER_MAX_W = 128, 1280
+
+# --------------------------------------------------------------
+# Device selection – GPU preferred, but fall back to CPU
+# --------------------------------------------------------------
+if torch.cuda.is_available():
+    device = "cuda"
+    device_id = 0
+else:
+    device = "cpu"
+    device_id = -1
+    print(
+        "⚠️ No CUDA device detected – falling back to CPU. "
+        "The 5 B model may be too large for CPU inference."
+    )
+
+print("Initializing WanTI2V pipeline …")
+pipeline = wan.WanTI2V(
+    config=cfg,
+    checkpoint_dir=ckpt_dir,
+    device_id=device_id,
+    rank=0,
+    t5_fsdp=False,
+    dit_fsdp=False,
+    use_sp=False,
+    t5_cpu=False,
+    init_on_cpu=False,
+    convert_model_dtype=True,
+)
+print("✅ Pipeline ready.")
+
 
 print("Starting Gradio App for Wan 2.2 TI2V-5B...")
 
@@ -33,6 +82,20 @@ cfg = WAN_CONFIGS[TASK_NAME]
 FIXED_FPS = 24
 MIN_FRAMES_MODEL = 8
 MAX_FRAMES_MODEL = 121 
+# --------------------------------------------------------------
+# Device selection – GPU preferred, but fall back to CPU
+# --------------------------------------------------------------
+if torch.cuda.is_available():
+    device = "cuda"
+    device_id = 0
+else:
+    device = "cpu"
+    device_id = -1
+    print(
+        "⚠️ No CUDA device detected – falling back to CPU. "
+        "The 5‑B Wan model may be too large for CPU inference; "
+        "consider using a smaller checkpoint or a GPU."
+    )
 
 # Dimension calculation constants
 MOD_VALUE = 32
