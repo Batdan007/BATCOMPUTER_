@@ -1,5 +1,5 @@
 @echo off
-title BATCOMPUTER_
+title BATDAN_BATCOMPUTER
 color 0B
 
 REM Ensure Python is available

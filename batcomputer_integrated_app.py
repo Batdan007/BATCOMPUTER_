@@ -11,7 +11,7 @@ import queue
 class BATCOMPUTER_IntegratedApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("BATCOMPUTER_ - Integrated Development Environment")
+        self.root.title("BATDAN_BATCOMPUTER - Integrated Development Environment")
         self.root.geometry("1600x1000")
         self.root.configure(bg='#1a1a1a')
         
@@ -76,11 +76,11 @@ class BATCOMPUTER_IntegratedApp:
         
         # BATCOMPUTER_ Tools menu
         batcomputer_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="BATCOMPUTER_", menu=batcomputer_menu)
+        menubar.add_cascade(label="BATDAN_BATCOMPUTER", menu=batcomputer_menu)
         batcomputer_menu.add_checkbutton(label="Voice Commander", variable=self.voice_enabled, command=self.toggle_voice_commander)
         # ML Agent and Video Processing checkbuttons removed - not implemented
         batcomputer_menu.add_separator()
-        batcomputer_menu.add_command(label="Run BATCOMPUTER_ Voice", command=self.run_batcomputer_voice)
+        batcomputer_menu.add_command(label="Run BATDAN_BATCOMPUTER Voice", command=self.run_batcomputer_voice)
         # ML Agent and Video Processing removed - not implemented
         # Auto Installer removed - not shipped
         
@@ -141,7 +141,7 @@ class BATCOMPUTER_IntegratedApp:
         main_container.add(left_frame, weight=1)
         
         # BATCOMPUTER_ Quick Access
-        batcomputer_label = ttk.Label(left_frame, text="BATCOMPUTER_ Tools", font=('Arial', 10, 'bold'))
+        batcomputer_label = ttk.Label(left_frame, text="BATDAN_BATCOMPUTER Tools", font=('Arial', 10, 'bold'))
         batcomputer_label.pack(pady=5)
         
         # BATCOMPUTER_ tools frame
@@ -176,7 +176,7 @@ class BATCOMPUTER_IntegratedApp:
         output_frame = ttk.Frame(right_frame)
         output_frame.pack(fill='x', pady=5)
         
-        ttk.Label(output_frame, text="BATCOMPUTER_ Output", font=('Arial', 10, 'bold')).pack(anchor='w')
+        ttk.Label(output_frame, text="BATDAN_BATCOMPUTER Output", font=('Arial', 10, 'bold')).pack(anchor='w')
         self.output_text = scrolledtext.ScrolledText(output_frame, height=8, bg='#1e1e1e', fg='#ffffff')
         self.output_text.pack(fill='x', padx=5)
     
@@ -217,7 +217,7 @@ class BATCOMPUTER_IntegratedApp:
         status_frame = ttk.Frame(self.root)
         status_frame.pack(fill='x', side='bottom')
         
-        self.status_label = ttk.Label(status_frame, text="BATCOMPUTER_ Ready", relief='sunken')
+        self.status_label = ttk.Label(status_frame, text="BATDAN_BATCOMPUTER Ready", relief='sunken')
         self.status_label.pack(side='left', fill='x')
         
         # BATCOMPUTER_ status indicators
@@ -254,7 +254,7 @@ class BATCOMPUTER_IntegratedApp:
     def run_batcomputer_voice(self):
         try:
             self.output_text.delete('1.0', 'end')
-            self.output_text.insert('end', "🎤 Starting BATCOMPUTER_ Voice Commander...\n")
+            self.output_text.insert('end', "🎤 Starting BATDAN_BATCOMPUTER Voice Commander...\n")
             
             if os.path.exists('BATCOMPUTER_voice_commander.py'):
                 result = subprocess.run([sys.executable, 'BATCOMPUTER_voice_commander.py'], 
@@ -264,7 +264,7 @@ class BATCOMPUTER_IntegratedApp:
                 if result.stderr:
                     self.output_text.insert('end', "STDERR:\n" + result.stderr)
             else:
-                self.output_text.insert('end', "❌ BATCOMPUTER_ Voice Commander not found\n")
+                self.output_text.insert('end', "❌ BATDAN_BATCOMPUTER Voice Commander not found\n")
             
             self.status_label.config(text="Voice Commander execution completed")
         except Exception as e:
@@ -319,7 +319,7 @@ class BATCOMPUTER_IntegratedApp:
         pass
     
     def show_batcomputer_docs(self):
-        docs_text = """BATCOMPUTER_ Integrated Development Environment
+        docs_text = """BATDAN_BATCOMPUTER Integrated Development Environment
 
 Available Tools and Modules:
 
@@ -685,7 +685,7 @@ For detailed documentation, check the individual README files."""
         self.status_label.config(text=f"Language changed to: {language}")
     
     def show_about(self):
-        about_text = """BATCOMPUTER_ Integrated Development Environment v1.0
+        about_text = """BATDAN_BATCOMPUTER Integrated Development Environment v1.0
 
 A comprehensive development platform that combines:
 • Professional code editor and project manager
@@ -701,8 +701,8 @@ Integrated with all BATCOMPUTER_ modules and agents"""
     
     def load_settings(self):
         try:
-            if os.path.exists('batcomputer_settings.json'):
-                with open('batcomputer_settings.json', 'r') as f:
+            if os.path.exists('batdan_batcomputer_settings.json'):
+                with open('batdan_batcomputer_settings.json', 'r') as f:
                     settings = json.load(f)
                     self.recent_files = settings.get('recent_files', [])
                     self.projects = settings.get('projects', {})
@@ -715,7 +715,7 @@ Integrated with all BATCOMPUTER_ modules and agents"""
                 'recent_files': self.recent_files,
                 'projects': self.projects
             }
-            with open('batcomputer_settings.json', 'w') as f:
+            with open('batdan_batcomputer_settings.json', 'w') as f:
                 json.dump(settings, f, indent=2)
         except:
             pass
@@ -734,4 +734,14 @@ def main():
     root.mainloop()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        import traceback
+        try:
+            with open("batdan_batcomputer_error.log", "w", encoding="utf-8") as f:
+                f.write(traceback.format_exc())
+        except Exception:
+            pass
+        print("Fatal error:", e)
+        raise
